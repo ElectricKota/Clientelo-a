@@ -1,0 +1,20 @@
+# Pevná taxonomie sektorů (PLAN.md §3). Klíč -> regex klíčových slov (CZ + EN, case-insensitive).
+# Sektor investora = nejčastější sektory firem, do kterých podle dokladů investoval,
+# doplněné o preferovaná odvětví z profilu CVCA.
+
+generalist: "sector agnostic|bez preference|agnostic|generalist|všech odvětví"
+fintech: "fintech|platb|payment|banking|bankovn|pojišť|insurtech|úvěr|lending|investiční aplikac|trading|účetn|accounting|wallet|peněž"
+crypto_web3: "krypto|crypto|blockchain|web3|bitcoin|token"
+ai_data: "umělou inteligenc|umělá inteligence|\\bai\\b|machine learning|strojov[ée] učení|data|analyt|llm|jazykov[ýé] model"
+saas_b2b: "saas|software|b2b|platform[auy] pro firmy|automatiz|cloud|crm|erp|produktivit|devtools|vývojář"
+healthtech_bio: "health|zdrav|medic|lékař|nemoc|pacient|biotech|farma|pharma|diagnost|klinik|terapi|kardi|wellbeing|duševní"
+deeptech_hw: "deeptech|deep tech|hardware|robot|dron|satelit|space|vesmír|kvant|quantum|polovodič|čip|senzor|laser|materiál|fotonik"
+energy_cleantech: "cleantech|energ|baterie|battery|solár|obnoviteln|klima|climate|uhlík|carbon|emis|udržiteln|sustainab|recykl|elektromobil|vodík"
+ecommerce_consumer: "e-shop|eshop|e-commerce|ecommerce|spotřebitel|consumer|móda|fashion|kosmetik|retail|maloobchod|doručov|nákup|marketplace|d2c"
+mobility_logistics: "mobilit|doprav|logisti|přeprav|zásilk|sklad|auto|kolob|cestov|travel|letect"
+proptech_construction: "proptech|stavebn|construction|realit|nemovitost|byt"
+edtech_hr: "edtech|vzdělá|educat|škol|kurz|učen|hr\\b|nábor|recruit|zaměstnan|talent"
+media_gaming: "média|media|hry|gaming|game|hern|video|stream|hudb|music|content|creator|marketing|reklam"
+foodtech_agri: "food|jídl|potravin|restaura|gastro|agri|zeměděl|farm"
+security_defense: "kyberbezpeč|cyber|security|bezpečnost|defense|defence|obran|vojen"
+industry: "průmysl|industri|výrob|manufactur|strojír|chemi"

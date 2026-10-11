@@ -1,0 +1,27 @@
+[project]
+name = "investors"
+version = "0.1.0"
+description = "Spolehlivá databáze investorů – ověřený vzorek českých VC z veřejných zdrojů"
+authors = [
+    { name = "Michal Kotek", email = "ja@michalkotek-tech.cz" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "openpyxl>=3.1.5",
+    "pyyaml>=6.0.3",
+    "rapidfuzz>=3.14.6",
+    "selectolax>=1.0.0",
+]
+
+[project.scripts]
+investors = "investors.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.13.0,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

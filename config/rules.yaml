@@ -1,0 +1,42 @@
+# Pravidla zařazení / vyřazení (PLAN.md §2 a §4). Měnit zde, ne v kódu.
+
+reference_date: "2026-10-11"
+activity_window_months: 36
+
+# Kurzy pro převod částek na EUR (pevné, orientační; uvedeno v reportu).
+fx_to_eur:
+  EUR: 1.0
+  CZK: 0.04       # 25 Kč / EUR
+  USD: 0.92
+  GBP: 1.17
+
+# Doklad aktivity (PLAN §4.2 bod 3):
+#   >= 1 datovaná investice z tieru A nebo B v okně aktivity, NEBO
+#   >= 2 nezávislé doklady tieru C (různé články o různých investicích) v okně.
+evidence:
+  min_tier_c_articles: 2
+
+# Vyřazení podle názvu / profilu (kód důvodu -> regex, case-insensitive).
+exclude_name_patterns:
+  EXCL_REAL_ESTATE: "nemovit|realit|real estate|propert|reziden|residential|develop|bydlen|\\bbyt|reit|office|logistic|retail park|hotel|lázn|lazn|parking"
+  EXCL_ENERGY_INFRA: "energ|solar|\\bfve\\b|photovolt|infrastru|wind|hydro"
+  EXCL_DEBT: "dluhopis|bond|\\bdebt\\b|úvěr|credit|lending|leasing|mezzanin|money market|peněžního trhu|penezniho trhu"
+  EXCL_PUBLIC_MARKETS: "akciov|dynamick|konzervativ|vyváž|vyvaz|globální|global equity|index|smíšen|smisen|penzijn|účastnick"
+  EXCL_COMMODITY_OTHER: "komodit|gold|zlat|\\bagro|farm|lesní|forest|wine|vín|art fund|uměn|crypto|krypto|blockchain"
+  EXCL_FUND_OF_FUNDS: "fond fondů|fund of funds|fondu fondů"
+
+# Signály typu investora (hledá se v typu investic CVCA, v názvu a v kontextu článků).
+vc_signals: "venture|\\bvc\\b|seed|pre-seed|startup|start-up|startovní|rizikov[ýé] kapitál|deeptech|early.?stage|series a|sérii a|inkubát|akcelerát|accelerat|angel"
+pe_signals: "buyout|buy-out|\\bmbo\\b|\\bmbi\\b|\\blbo\\b|odkup|akvizic|konsolidac|private equity|growth|růstov|expansion|expanz|rekapitaliz|mezzanin|debt|lending"
+cvc_signals: "korporátní|corporate venture|investiční rameno|investiční ramen|\\bcvc\\b"
+accelerator_signals: "akcelerát|accelerat|inkubát|incubat"
+
+# Slova, která nesou jen obecný význam a z klíče značky se odstraňují.
+generic_brand_words: [ventures, venture, capital, vc, fund, funds, fond, partners, investments,
+  investment, invest, investors, management, group, holding, holdings, equity, sicav,
+  podfond, asset, assets, advisors, advisers, company, global, limited, ltd, gmbh, sarl,
+  scsp, lp, se, as, sro, the, and, a, cz, czech, ceska, cesko, praha, prague]
+
+# Klíče značek, které jsou příliš obecné na spolehlivé spojování záznamů.
+ambiguous_brand_keys: [alpha, beta, first, prime, new, next, smart, central, european,
+  euro, top, one, partners, capital, invest, fund, future, digital, tech, impact, credit]

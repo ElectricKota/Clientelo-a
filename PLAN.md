@@ -357,3 +357,18 @@ Clientelo-a/
 - NRI – Fond Ukrajina (DEPO Ventures One SCSp): https://www.businessinfo.cz/clanky/nri-dokoncila-vyber-venture-kapitaloveho-fondu-pro-program-fond-ukrajina/
 - Otevřená data veřejného rejstříku: https://dataor.justice.cz/
 - ARES REST API: https://ares.gov.cz/ekonomicke-subjekty-v-be/rest
+
+---
+
+## 15. Poznámky z realizace (odchylky od plánu)
+
+| Plán | Skutečnost | Dopad |
+|---|---|---|
+| JERRS seznamy scrapovat živě | Při strojovém přístupu JERRS zobrazuje **CAPTCHA**. Neobcházíme ji, pipeline čte datovaný snapshot sestav z 2026-10-11 (`data/snapshots/jerrs/`). Při obnově se snapshot uloží ručně z prohlížeče | Obnova registru je poloautomatická |
+| Justice.cz – hromadná otevřená data (společníci) | Místo stahování celých dumpů: **ARES REST `ekonomicke-subjekty-vr`** cíleně pro portfoliové firmy z článků | Stejný tier A doklad (zápis společníka s datem), mnohem méně dat |
+| CVCA jako aktuální tier B | Všechny profily řádných členů jsou z **ledna 2020**. Ticket/AUM z CVCA se proto exportují s datem 2020 a novější údaj z médií má přednost | Hodnoty z CVCA jsou orientační |
+| „≥ 2 nezávislé zdroje tieru C“ | Implementováno jako **≥ 2 různé články o různých investicích** (CzechCrunch). Jiná média nebyla v rozsahu 1h limitu | Uvedeno jako omezení v reportu |
+| Datum investice | U tier C = **datum publikace článku** (proxy). U tier A = datum zápisu společníka v OR | |
+| Archivace dokladů ve Wayback Machine | **Neprovedeno.** Save Page Now je zápis do veřejné služby a s 1h limitem nebyl prioritou. Doklady mají SHA-256 a lokální cache | Doplnitelné jedním příkazem |
+| Pydantic, Datasette | Nahrazeno `dataclasses` a exportem do XLSX | Méně závislostí |
+| Spočítat SEC Form D / ADV | SEC vyžaduje v User-Agentu kontaktní e-mail. Bez souhlasu ho nevyplňujeme, čísla pro US se berou z publikovaných přehledů | Uvedeno v §10 reportu |
