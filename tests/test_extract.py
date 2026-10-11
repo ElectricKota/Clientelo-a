@@ -42,3 +42,12 @@ def test_brand_key_merges_registry_and_media_names():
 
 def test_startup_names():
     assert "Gitgut" in startup_names("Do startupu Gitgut investovaly fondy Credo Ventures a Reflex Capital.")
+
+
+def test_deal_roundup_line():
+    from investors.extract import deal_line, is_investment_sentence
+    s = ("Delta Green (energetika): 2,2 milionu eur (55 milionů korun) | seed | "
+         "Tilia Impact Ventures, Credo Ventures, Purple Ventures")
+    assert deal_line(s) == ("Delta Green", "energetika")
+    assert is_investment_sentence("Product Fruits (B2B SaaS): 1,6 milionu dolarů (36 milionů korun) | Reflex Capital")
+    assert deal_line("Startup (obor): suma | kolo | investoři") is None

@@ -72,13 +72,16 @@ def _type(i: Investor) -> str:
         t = i.cvca.fields.get("investment_type", "") + " " + i.cvca.fields.get("sectors", "")
         if cvc.search(t):
             return "cvc"
-        if vc.search(t) or vc.search(i.cvca.name):
-            return "vc"
-        if pe.search(t):
-            return "pe"
+        nv = len(vc.findall(t)) + 2 * len(vc.findall(i.cvca.name))
+        npe = len(pe.findall(t))
+        if nv or npe:
+            return "vc" if nv >= npe else "pe"
     ctx = " ".join(i.text_context)
     if cvc.search(ctx):
         return "cvc"
+    # investice do nemovitostí (haly, výstavba, ...) nejsou investice do firem
+    if len(rx("real_estate_context").findall(ctx)) > len(vc.findall(ctx)):
+        return "other"
     v = len(vc.findall(ctx)) + 3 * len(vc.findall(names))
     p = len(pe.findall(ctx)) + 3 * len(re.findall(r"equity|private equity|buyout", names, re.I))
     if v == 0 and p == 0:
@@ -119,7 +122,7 @@ def classify(i: Investor, cutoff: str) -> None:
         i.reasons.append(why)
 
     # 1) zjevně jiný typ fondu podle názvu (realitní, energetický, dluhový, ...)
-    if not vc_in_name and not i.investments():
+    if not vc_in_name and (not i.investments() or i.type == "other"):
         for code, pat in R["exclude_name_patterns"].items():
             if re.search(pat, names, re.I):
                 return out("excluded", code, f"název odpovídá vzoru {code}")

@@ -3,6 +3,5 @@ __pycache__/
 *.pyc
 .pytest_cache/
 data/cache/
-data/*.sqlite
 .DS_Store
 data/logs/

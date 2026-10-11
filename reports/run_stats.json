@@ -1,0 +1,66 @@
+{
+  "registry_entities": 1355,
+  "cvca_profiles": 27,
+  "cc_tags_selected": 98,
+  "articles": 904,
+  "or_confirmations": 44,
+  "network_requests": 0,
+  "sample": 44,
+  "candidates": 1425,
+  "evidence": 846,
+  "verification_rows": 45,
+  "seconds": 8.6,
+  "activity_cutoff": "2023-10-11",
+  "db": {
+    "status": {
+      "excluded": 1350,
+      "included": 44,
+      "review": 31
+    },
+    "not_included_codes": {
+      "EXCL_COMMODITY_OTHER": 22,
+      "EXCL_DEBT": 49,
+      "EXCL_ENERGY_INFRA": 21,
+      "EXCL_FOREIGN": 179,
+      "EXCL_FUND_OF_FUNDS": 7,
+      "EXCL_NOT_VC": 26,
+      "EXCL_PUBLIC_MARKETS": 50,
+      "EXCL_REAL_ESTATE": 116,
+      "INSUFFICIENT_EVIDENCE": 18,
+      "NO_CZ_ENTITY": 11,
+      "NO_PUBLIC_EVIDENCE": 880,
+      "TYPE_UNCLEAR": 2
+    },
+    "sample_size": 44,
+    "fill_rates": {
+      "sectors": 0.955,
+      "stages": 0.705,
+      "ticket_min_eur": 0.909,
+      "aum_eur": 0.182,
+      "website": 0.136,
+      "manager_ico": 1.0
+    },
+    "ticket_sources": {
+      "": 4,
+      "cvca_profile": 6,
+      "round_size_proxy": 34
+    },
+    "aum_sources": {
+      "": 36,
+      "cvca_profile": 3,
+      "press": 5
+    },
+    "sample_with_tier_a_investment": 16,
+    "sample_by_discovery_sources": {
+      "cc_tag": 1,
+      "cc_tag,cc_text": 9,
+      "cc_tag,cc_text,cvca": 1,
+      "cc_tag,cc_text,cvca,jerrs": 2,
+      "cc_tag,cc_text,jerrs": 8,
+      "cc_text": 15,
+      "cc_text,cvca": 2,
+      "cc_text,cvca,jerrs": 1,
+      "cc_text,jerrs": 5
+    }
+  }
+}

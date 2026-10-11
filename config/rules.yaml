@@ -18,7 +18,7 @@ evidence:
 
 # Vyřazení podle názvu / profilu (kód důvodu -> regex, case-insensitive).
 exclude_name_patterns:
-  EXCL_REAL_ESTATE: "nemovit|realit|real estate|propert|reziden|residential|develop|bydlen|\\bbyt|reit|office|logistic|retail park|hotel|lázn|lazn|parking"
+  EXCL_REAL_ESTATE: "nemovit|realit|\\blease|real estate|propert|reziden|residential|develop|bydlen|\\bbyt|reit|logistic|retail park|hotel|lázn|lazn|parking"
   EXCL_ENERGY_INFRA: "energ|solar|\\bfve\\b|photovolt|infrastru|wind|hydro"
   EXCL_DEBT: "dluhopis|bond|\\bdebt\\b|úvěr|credit|lending|leasing|mezzanin|money market|peněžního trhu|penezniho trhu"
   EXCL_PUBLIC_MARKETS: "akciov|dynamick|konzervativ|vyváž|vyvaz|globální|global equity|index|smíšen|smisen|penzijn|účastnick"
@@ -27,14 +27,15 @@ exclude_name_patterns:
 
 # Signály typu investora (hledá se v typu investic CVCA, v názvu a v kontextu článků).
 vc_signals: "venture|\\bvc\\b|seed|pre-seed|startup|start-up|startovní|rizikov[ýé] kapitál|deeptech|early.?stage|series a|sérii a|inkubát|akcelerát|accelerat|angel"
-pe_signals: "buyout|buy-out|\\bmbo\\b|\\bmbi\\b|\\blbo\\b|odkup|akvizic|konsolidac|private equity|growth|růstov|expansion|expanz|rekapitaliz|mezzanin|debt|lending"
+pe_signals: "buy.?out|\\bmbo\\b|\\bmbi\\b|\\blbo\\b|odkup|akvizic|konsolidac|private equity|growth|růstov|expansion|expanz|rekapitaliz|mezzanin|debt|lending"
 cvc_signals: "korporátní|corporate venture|investiční rameno|investiční ramen|\\bcvc\\b"
+real_estate_context: "nemovitost|realit|výstavb|\\bhal[aye]?\\b|developer|byt[yů]?\\b|kancelář|logistick[ýé] park|sale & leaseback"
 accelerator_signals: "akcelerát|accelerat|inkubát|incubat"
 
 # Slova, která nesou jen obecný význam a z klíče značky se odstraňují.
 generic_brand_words: [ventures, venture, capital, vc, fund, funds, fond, partners, investments,
   investment, invest, investors, management, group, holding, holdings, equity, sicav,
-  podfond, asset, assets, advisors, advisers, company, global, limited, ltd, gmbh, sarl,
+  podfond, asset, assets, advisors, advisers, company, global, limited, ltd, gmbh, sarl, gp, general,
   scsp, lp, se, as, sro, the, and, a, cz, czech, ceska, cesko, praha, prague]
 
 # Klíče značek, které jsou příliš obecné na spolehlivé spojování záznamů.

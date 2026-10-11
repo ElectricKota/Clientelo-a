@@ -146,7 +146,7 @@ class Pipeline:
     def discover_from_text(self) -> None:
         new = 0
         for a in self.articles.values():
-            for s in X.sentences(" ".join(a.paragraphs)):
+            for s in self._sentences(a):
                 if not X.is_investment_sentence(s):
                     continue
                 for h in X.investor_names(s):
@@ -169,8 +169,10 @@ class Pipeline:
 
     def _merge_sub_brands(self) -> None:
         """„Presto Tech Horizons“ (jen z textu) -> „Presto“ (registr/CVCA), „Credo Stage“ -> „Credo“."""
+        # jen pod kurátorované značky (CVCA, tag CzechCrunch); pod značky jen z registru ne –
+        # „Vista Credit Partners“ (US) by jinak splynulo s českým fondem „Vista“
         anchors = {k for k, i in self.inv.items()
-                   if " " not in k and not k.startswith("ico:") and i.sources & {"jerrs", "cvca", "cc_tag"}}
+                   if " " not in k and not k.startswith("ico:") and i.sources & {"cvca", "cc_tag"}}
         merged = 0
         for k in list(self.inv):
             i = self.inv[k]
@@ -182,6 +184,11 @@ class Pipeline:
                 del self.inv[k]
                 merged += 1
         self.log(f"[resolve] {merged} dílčích značek (fondů) sloučeno s mateřskou značkou")
+
+    @staticmethod
+    def _sentences(a: cc.Article) -> list[str]:
+        # dělit po odstavcích: řádky souhrnů dealů nemají tečku a jinak by splynuly
+        return [s for p in a.paragraphs for s in X.sentences(p)]
 
     # ------------------------------------------------------------------ 3 evidence (gazetteer)
     def collect_evidence(self) -> None:
@@ -224,7 +231,7 @@ class Pipeline:
             head = f"{a.title}. {a.paragraphs[0] if a.paragraphs else ''}"
             head_startups = X.startup_names(head)
             per_article: set[str] = set()
-            for s in X.sentences(" ".join(a.paragraphs)):
+            for s in self._sentences(a):
                 matches = find(s)
                 if not matches:
                     continue
@@ -245,8 +252,13 @@ class Pipeline:
                     if not is_inv or is_exit or key in per_article:
                         continue
                     per_article.add(key)
-                    startups = [n for n in X.startup_names(s) if brand_key(n) != key] or \
-                               [n for n in head_startups if brand_key(n) != key]
+                    deal = X.deal_line(s)
+                    if deal:
+                        startups = [deal[0]]
+                        i.text_context.append(deal[1])   # obor ze souhrnu dealů
+                    else:
+                        startups = [n for n in X.startup_names(s) if brand_key(n) != key] or \
+                                   [n for n in head_startups if brand_key(n) != key]
                     i.evidence.append(Evidence(
                         claim="investment", value=f"{startups[0] if startups else '?'} ({a.date})",
                         source_url=a.url, source_type="press", tier=TIER_C, published_date=a.date,
@@ -283,7 +295,7 @@ class Pipeline:
                 queries.append(i.cvca.legal_name)
             if i.cvca:
                 queries.append(re.sub(r"\s+[–-]\s+.*$", "", i.cvca.name))
-            queries += sorted((a for a in i.aliases if SUFFIX_RX.search(a)), key=len)[:2]
+            queries += sorted((a for a in i.aliases if SUFFIX_RX.search(a)), key=lambda a: (len(a), a))[:2]
             queries.append(i.name)
             for q in dict.fromkeys(queries):
                 searched += 1
@@ -351,6 +363,19 @@ class Pipeline:
         self.stats["or_confirmations"] = confirmed
         self.log(f"[ares-vr] {confirmed} investic potvrzeno v obchodním rejstříku ({calls} dotazů)")
 
+    @staticmethod
+    def _pick_display_name(i: Investor) -> None:
+        """„J&T“ -> „J&T Ventures“: preferuj alias s příponou, který se skutečně objevuje v dokladech."""
+        if SUFFIX_RX.search(i.name):
+            return
+        if i.cvca:
+            i.name = display_name(i.cvca.name)
+            return
+        used = [a for a in i.aliases if SUFFIX_RX.search(a)
+                and any(a.lower() in e.snippet.lower() for e in i.evidence if e.claim == "investment")]
+        if used:
+            i.name = min(used, key=lambda a: (len(a), a))
+
     # ------------------------------------------------------------------ run
     def run(self) -> list[Investor]:
         self.load_registry()
@@ -362,6 +387,7 @@ class Pipeline:
         self.resolve_managers()
         self.confirm_in_commercial_register()
         for i in self.inv.values():
+            self._pick_display_name(i)
             fill_fields(i, self.cutoff)
             classify(i, self.cutoff)
         self.stats["network_requests"] = self.f.network_requests

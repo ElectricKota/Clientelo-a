@@ -8,8 +8,9 @@ URL, datum, citaci a SHA-256 otisk staženého obsahu.
 - Výsledky, přesnost a odhad nákladů pro celý svět: [reports/REPORT.md](reports/REPORT.md)
 - Data: [out/investors_cz_vc.csv](out/investors_cz_vc.csv) (vzorek), [out/all_candidates.csv](out/all_candidates.csv)
   (všichni kandidáti i s důvodem vyřazení), [out/evidence.csv](out/evidence.csv) (doklady),
-  [out/investors_cz_vc.xlsx](out/investors_cz_vc.xlsx) (vše v jednom sešitu)
-- Ruční ověření: [verification/form.csv](verification/form.csv)
+  [out/investors_cz_vc.xlsx](out/investors_cz_vc.xlsx) (vše v jednom sešitu),
+  [data/investors.sqlite](data/investors.sqlite) (tabulky `investor`, `fund`, `evidence`)
+- Ruční ověření: [verification/form.csv](verification/form.csv) → vyplnit a uložit jako `verification/form_filled.csv` → `make metrics`
 
 ## Spuštění
 

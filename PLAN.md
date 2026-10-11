@@ -1,6 +1,7 @@
 # Zadání A – Spolehlivá databáze investorů: analýza a realizační plán
 
 > Stav: v1.0, odsouhlaseno · datum: 2026-10-10 · odevzdání: **do 2026-10-17**
+> Realizace (2026-10-11): F0–F7 hotovo, výsledky v [reports/REPORT.md](reports/REPORT.md); **F8 ruční ověření čeká na Michala**
 
 ---
 

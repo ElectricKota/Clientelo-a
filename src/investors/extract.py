@@ -45,7 +45,7 @@ zuzana monika kristýna andrea klára alena simona nikola""".split())
 
 STOPWORDS_NAME = set("""Česko Česku Praha Praze Evropa Evropě Brno Brně Slovensko Slovensku
 Startup Startupy Firma Investice Kolo Fond Ten Ta To Podle Jeho Její Jejich Na Do V Ve S Se A I
-Teď Nyní Letos Loni Celkem Mezi Kromě Díky Investiční Investoři Investor Společnost Spolu
+VC Fond Fondy Teď Nyní Letos Loni Celkem Mezi Kromě Díky Investiční Investoři Investor Společnost Spolu
 CzechCrunch Forbes""".split())
 
 AMOUNT_RX = re.compile(
@@ -71,8 +71,20 @@ def sentences(text: str) -> list[str]:
     return [p.strip() for p in parts if len(p.strip()) > 15]
 
 
+# Řádek měsíčního souhrnu „Startup (obor): suma | kolo | investoři“
+DEAL_LINE_RX = re.compile(r"^\s*([^:()|]{2,60}?)\s*\(([^)]{2,40})\)\s*:\s*(.+\|.*)$")
+
+
+def deal_line(s: str) -> tuple[str, str] | None:
+    """(firma, obor) pro řádek souhrnu dealů, jinak None. Hlavička souhrnu se ignoruje."""
+    m = DEAL_LINE_RX.match(s)
+    if not m or m.group(1).strip().lower() == "startup":
+        return None
+    return m.group(1).strip(), m.group(2).strip()
+
+
 def is_investment_sentence(s: str) -> bool:
-    return bool(INVEST_RX.search(s))
+    return bool(INVEST_RX.search(s) or deal_line(s))
 
 
 def _looks_like_person(name: str) -> bool:
@@ -85,7 +97,8 @@ def _looks_like_person(name: str) -> bool:
 def _clean_name(n: str) -> str:
     n = re.sub(r"[\.,;:]+$", "", n.strip())
     toks = n.split()
-    while toks and toks[0] in STOPWORDS_NAME:
+    adj = re.compile(r"(?:ský|ská|ské|ští|cký|cká|cké|čtí|ní)$|^(?:" + "|".join(NATIONALITY.values()) + ")", re.I)
+    while len(toks) > 1 and (toks[0] in STOPWORDS_NAME or adj.search(toks[0])):
         toks = toks[1:]
     return " ".join(toks)
 
